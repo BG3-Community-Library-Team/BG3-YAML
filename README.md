@@ -50,7 +50,7 @@ print(config.enabled) -- true
 
 ```lua
 -- Automatically find and load YAML config files from all installed mods
-local configs = Mods.YAML.LoadConfigFiles("MyModName", "MyConfigFileName")
+local configs = Mods.YAML.LoadConfigFiles("MyConfigFileName")
 
 for modGUID, configTable in pairs(configs) do
   print("Loaded config from mod: " .. modGUID)
@@ -94,14 +94,13 @@ end
 ### `Mods.YAML.LoadConfigFiles()`
 
 ```lua
-Mods.YAML.LoadConfigFiles(modName, fileName) -> table
+Mods.YAML.LoadConfigFiles(fileName) -> table
 ```
 
 A convenience method that automatically scans **every installed mod** (in load order) for a YAML configuration file matching the given filename pattern, parses each one, and returns all successfully parsed configs in a single table.
 
 | Parameter  | Type     | Description                                                        |
 |------------|----------|--------------------------------------------------------------------|
-| `modName`  | `string` | The name of the mod initiating the search.                         |
 | `fileName` | `string` | The base filename (without extension) to look for in each mod.     |
 
 **Returns:** A Lua `table` of parsed configs, **keyed by each mod's UUID**. Only mods that contained a matching YAML file will have entries.

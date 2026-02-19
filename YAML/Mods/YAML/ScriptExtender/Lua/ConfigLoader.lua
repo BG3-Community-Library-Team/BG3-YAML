@@ -1,9 +1,9 @@
-local configBasePattern = string.gsub("Mods/%s/ScriptExtender/%s.", "'", "\'")
+local configBasePattern = string.gsub("Mods/%s/ScriptExtender/", "'", "\'")
 local yamlFormat = { "yaml", "yml"}
 local loadedConfigs = {}
 
-local function BuildConfigPattern(modName, fileName)
-  return "Mods/" .. modName .. "/ScriptExtender/" .. fileName .. "."
+local function BuildConfigPattern(fileName)
+  return configBasePattern .. fileName .. "."
 end
 
 ---@param configStr string The YAML config as a string.
@@ -25,7 +25,7 @@ end
 --- lua tables, and returns.
 ---@param modName string The name of the mod to search for configs for.
 ---@return table loadedConfigs A table of successfully parsed YAML configs, indexed by mod GUID.
-function LoadConfigFiles(modName, fileName)
+function LoadConfigFiles(fileName)
   Utils.Info(Strings.PREFIX .. "Entering LoadConfigFiles")
   for _, uuid in pairs(Ext.Mod.GetLoadOrder()) do
     local modData = Ext.Mod.GetMod(uuid)
@@ -34,7 +34,7 @@ function LoadConfigFiles(modName, fileName)
 
     for _, ext in ipairs(yamlFormat) do
       if found then break end
-        local filePath = (BuildConfigPattern(modName) .. ext):format(modData.Info.Directory)
+        local filePath = (BuildConfigPattern(fileName) .. ext):format(modData.Info.Directory)
         local config = Ext.IO.LoadFile(filePath, "data")
         if config ~= nil and config ~= "" then
           Utils.Info(Strings.PREFIX .. "Found " .. ext .. " config for Mod: " .. modName)
